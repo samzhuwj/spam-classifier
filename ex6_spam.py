@@ -3,8 +3,8 @@ import numpy as np
 import scipy.io as scio
 from sklearn import svm
 
-import processEmail as pe
-import emailFeatures as ef
+from processEmail import process_email, get_vocab_list
+from emailFeatures import email_features
 
 
 plt.ion()
@@ -17,11 +17,10 @@ np.set_printoptions(formatter={'float': '{: 0.6f}'.format})
 # implement the preprocessing steps for each email. You should
 # complete the code in processEmail.py to produce a word indices vector
 # for a given email.
-
 print('Preprocessing sample email (emailSample1.txt) ...')
 
 file_contents = open('emailSample1.txt', 'r').read()
-word_indices = pe.process_email(file_contents)
+word_indices = process_email(file_contents)
 
 # Print stats
 print('Word Indices: ')
@@ -34,11 +33,10 @@ input('Program paused. Press ENTER to continue')
 # Now, you will convert each email into a vector of features in R^n.
 # You should complete the code in emailFeatures.py to produce a feature
 # vector for a given mail
-
 print('Extracting Features from sample email (emailSample1.txt) ... ')
 
 # Extract features
-features = ef.email_features(word_indices)
+features = email_features(word_indices)
 
 # Print stats
 print('Length of feature vector: {}'.format(features.size))
@@ -63,10 +61,9 @@ print('(this may take 1 to 2 minutes)')
 c = 0.1
 clf = svm.SVC(c, kernel='linear')
 clf.fit(X, y)
-
 p = clf.predict(X)
 
-print('Training Accuracy: {}'.format(np.mean(p == y) * 100))
+print('Training Accuracy: {}'.format(np.mean(p==y)*100))
 
 
 # ===================== Part 4: Test Spam Classification =====================
@@ -82,7 +79,7 @@ print('Evaluating the trained linear SVM on a test set ...')
 
 p = clf.predict(Xtest)
 
-print('Test Accuracy: {}'.format(np.mean(p == ytest) * 100))
+print('Test Accuracy: {}'.format(np.mean(p==ytest)*100))
 
 input('Program paused. Press ENTER to continue')
 
@@ -93,9 +90,7 @@ input('Program paused. Press ENTER to continue')
 # whether an email is spam or not. The following code finds the words with
 # the highest weights in the classifier. Informally, the classifier
 # 'thinks' that these words are the most likely indicators of spam.
-#
-
-vocab_list = pe.get_vocab_list()
+vocab_list = get_vocab_list()
 indices = np.argsort(clf.coef_).flatten()[::-1]
 print(indices)
 

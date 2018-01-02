@@ -1,6 +1,7 @@
-import numpy as np
 import re
+
 import nltk, nltk.stem.porter
+import numpy as np
 
 
 def process_email(email_contents):
@@ -8,13 +9,10 @@ def process_email(email_contents):
     email processing
     """    
     vocab_list = get_vocab_list()
-
     word_indices = np.array([], dtype=np.int64)
 
     # ===================== Preprocess Email =====================
-
     email_contents = email_contents.lower()
-
     email_contents = re.sub('<[^<>]+>', ' ', email_contents)
 
     # Any numbers get replaced with the string 'number'
@@ -37,13 +35,11 @@ def process_email(email_contents):
     stemmer = nltk.stem.porter.PorterStemmer()
 
     # print('email contents : {}'.format(email_contents))
-
     tokens = re.split('[@$/#.-:&*+=\[\]?!(){\},\'\">_<;% ]', email_contents)
 
     for token in tokens:
         token = re.sub('[^a-zA-Z0-9]', '', token)
         token = stemmer.stem(token)
-
         if len(token) < 1:
             continue
 
@@ -53,18 +49,16 @@ def process_email(email_contents):
         #                of the code, you have a stemmed word frome email in
         #                the variable token. You should look up token in the
         #                vocab_list. If a match exists, you should add the
-        #                index of the word to the word_indices nparray.
+        #                index of the word to the word_indices np array.
         #                Concretely, if token == 'action', then you should
-        #                look up the vocabulary list the find where in vocab_list
+        #                look up the vocabulary list to find where in vocab_list
         #                'action' appears. For example, if vocab_list[18] == 'action'
         #                then you should add 18 to the word_indices array.
-
         for i in range(1, len(vocab_list) + 1):
             if vocab_list[i] == token:
                 word_indices = np.append(word_indices, i)
 
         # ==========================================================
-
         print(token)
 
     print('==================')
@@ -73,10 +67,12 @@ def process_email(email_contents):
 
 
 def get_vocab_list():
+    """
+    get the vocabulary list
+    """
     vocab_dict = {}
     with open('vocab.txt') as f:
         for line in f:
             (val, key) = line.split()
             vocab_dict[int(val)] = key
-
     return vocab_dict

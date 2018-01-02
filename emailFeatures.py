@@ -10,7 +10,7 @@ def email_features(word_indices):
 
     # You need to return the following variables correctly.
     # Since the index of numpy array starts at 0, to align with the word indices we make n + 1 size array
-    features = np.zeros(n + 1)
+    features = np.zeros(n+1)
 
     # ===================== Your Code Here =====================
     # Instructions : Fill in this function to return a feature vector for the
@@ -44,10 +44,7 @@ def email_features(word_indices):
     #                vector should look like:
     #
     #                features = [0, 0, 0, 0, 1, 0, 0, 0, ... 0, 0, 0, 1, ... 0, 0, 0, 1, 0]
-    #
-    #
-
-    features[word_indices - 1] = 1
+    features[word_indices-1] = 1
 
     # ==========================================================
 
